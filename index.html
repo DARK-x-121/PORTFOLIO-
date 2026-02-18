@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEAM DARK | Amit Bhakta</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+  background:#0e1117;
+  color:#c9d1d9;
+  line-height:1.6;
+}
+
+/* NAV */
+nav{
+  background:#161b22;
+  padding:15px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom:1px solid #30363d;
+}
+
+.logo{
+  font-weight:700;
+  font-size:18px;
+  color:#58a6ff;
+}
+
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:25px;
+}
+
+nav a{
+  text-decoration:none;
+  color:#c9d1d9;
+  font-weight:500;
+}
+
+nav a:hover{
+  color:#58a6ff;
+}
+
+/* HERO */
+#home{
+  height:90vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+#home h1{
+  font-size:48px;
+  letter-spacing:4px;
+  margin-bottom:10px;
+}
+
+#home p{
+  color:#8b949e;
+  font-size:18px;
+}
+
+/* SECTION */
+section{
+  padding:70px 20px;
+  max-width:1100px;
+  margin:auto;
+}
+
+section h2{
+  margin-bottom:25px;
+  font-size:26px;
+  border-left:4px solid #58a6ff;
+  padding-left:12px;
+}
+
+/* ABOUT */
+.about-box{
+  background:#161b22;
+  padding:25px;
+  border-radius:8px;
+  border:1px solid #30363d;
+}
+
+/* CERTIFICATES */
+.cert-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
+}
+
+.cert-card{
+  background:#161b22;
+  border:1px solid #30363d;
+  border-radius:8px;
+  overflow:hidden;
+  transition:0.3s ease;
+}
+
+.cert-card:hover{
+  transform:translateY(-6px);
+  border-color:#58a6ff;
+}
+
+.cert-card img{
+  width:100%;
+  display:block;
+}
+
+.cert-card div{
+  padding:15px;
+  font-size:14px;
+  color:#8b949e;
+}
+
+/* CONTACT */
+.contact-box{
+  background:#161b22;
+  padding:25px;
+  border-radius:8px;
+  border:1px solid #30363d;
+}
+
+.contact-box a{
+  display:block;
+  margin-bottom:10px;
+  color:#58a6ff;
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  background:#161b22;
+  border-top:1px solid #30363d;
+  font-size:14px;
+  color:#8b949e;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">TEAM DARK</div>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#certificates">Certificates</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="home">
+  <h1>TEAM DARK</h1>
+  <p><p>Created on 12 February 2023, Team Dark is a free hacking learning platform dedicated to sharing knowledge on cybersecurity, red team tools, and real-time exploits. Our mission is to empower aspiring hackers and cybersecurity enthusiasts with practical skills.</p>
+</section>
+
+<section id="about">
+  <h2>About</h2>
+  <div class="about-box">
+    <p>
+      I am Amit Bhakta from Kolkata, focused on cybersecurity and ethical hacking.
+      I work on penetration testing fundamentals, red team concepts, and practical real time exploit research.
+      TEAM DARK was created to build a serious learning environment for cybersecurity enthusiasts.
+    </p>
+  </div>
+</section>
+
+<section id="certificates">
+  <h2>Certifications</h2>
+  <div class="cert-grid">
+
+    <div class="cert-card">
+      <img src="Certificate_1742140639073.png" alt="Certificate 1">
+      <div>Certification in Information Security– Practical Security Foundations</div>
+    </div>
+
+    <div class="cert-card">
+      <img src="IMG_20250319_215134.jpg" alt="Certificate 2">
+      <div>Cybersecurity Fundamentals & Threat Awareness</div>
+    </div>
+
+    <div class="cert-card">
+      <img src="Vmake1723867501017.png" alt="Certificate 3">
+      <div>Security Research & Technical Analysis</div>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact-box">
+    <a href="https://wa.me/919836942455" target="_blank">WhatsApp: +91 98369 42455</a>
+    <a href="https://instagram.com/dark_exploit_" target="_blank">Instagram: @dark_exploit_</a>
+  </div>
+</section>
+
+<footer>
+  © 2026 TEAM DARK | Developed by Amit Bhakta
+</footer>
+
+</body>
+</html>
