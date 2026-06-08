@@ -16,7 +16,7 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
 
-/* LOADER */
+
 #loader{
   position:fixed;inset:0;background:var(--bg);z-index:99999;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
@@ -28,17 +28,17 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;ov
 .loader-bar{height:100%;width:0;background:var(--accent);box-shadow:var(--glow);transition:width 0.05s;}
 .loader-txt{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);}
 
-/* CURSOR */
+
 #cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;box-shadow:0 0 10px var(--accent),0 0 25px rgba(0,229,255,.4);}
 #cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(0,229,255,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s ease-out,top .12s ease-out,width .3s,height .3s;}
 
-/* SCANLINES */
+
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:9000;}
 
-/* PARTICLES */
+
 #particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
 
-/* NAV */
+
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(7,10,15,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,229,255,.08);}
 .logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:18px;color:var(--accent);letter-spacing:6px;text-shadow:var(--glow);animation:pulse-logo 3s ease-in-out infinite;}
 @keyframes pulse-logo{0%,100%{text-shadow:0 0 10px rgba(0,229,255,.4);}50%{text-shadow:0 0 30px rgba(0,229,255,.95),0 0 60px rgba(0,229,255,.3);}}
@@ -175,16 +175,7 @@ section{padding:90px 40px;max-width:1100px;margin:auto;position:relative;z-index
 .tl-desc{font-size:13px;color:var(--muted);line-height:1.6;}
 
 /* PROJECTS */
-/* ═══════════════════════════════════════════════════
-   TOP 5 PROJECTS SECTION
-   ADD YOUR PROJECT DETAILS IN THE HTML BELOW
-   Each .proj-card has:
-   - data-num: project number (01, 02 etc)
-   - .proj-title: name of the tool
-   - .proj-desc: short description
-   - .proj-tags: tech/category tags
-   - .proj-link: replace href="#" with your GitHub URL
-   ═══════════════════════════════════════════════════ */
+
 .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;}
 .proj-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:26px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
 .proj-card:hover{border-color:rgba(0,229,255,.3);transform:translateY(-5px);box-shadow:0 15px 45px rgba(0,0,0,.5);}
@@ -417,81 +408,81 @@ footer span{color:var(--accent);}
     <!-- PROJECT 1 — REPLACE WITH YOUR TOOL -->
     <div class="proj-card reveal">
       <div class="proj-num">01</div>
-      <div class="proj-title">[ PROJECT NAME HERE ]</div>
-      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-title">[ DARK TG ]</div>
+      <div class="proj-desc"> HOST YOUR OWN TELEGRAM PHISSING BOT IN JUST 5 MIN.</div>
       <div class="proj-tags">
         <span class="proj-tag">PYTHON</span>
         <span class="proj-tag">RED TEAM</span>
         <span class="proj-tag">EDUCATIONAL</span>
       </div>
       <div class="proj-footer">
-        <span class="proj-stars">⭐ 0 stars</span>
+        <span class="proj-stars">⭐ 32 stars</span>
         <!-- REPLACE href WITH YOUR GITHUB LINK -->
-        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+        <a class="proj-link" https://github.com/DARK-x-121/DAKR-TG.git="#" target="_blank">VIEW →</a>
       </div>
     </div>
 
     <!-- PROJECT 2 -->
     <div class="proj-card reveal rd1">
       <div class="proj-num">02</div>
-      <div class="proj-title">[ PROJECT NAME HERE ]</div>
-      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-title">[ DARK SCANNER v4.0 ]</div>
+      <div class="proj-desc">DARK SCANNER v4.0 is a non-root network recon & port scanning tool .</div>
       <div class="proj-tags">
-        <span class="proj-tag">BASH</span>
+        <span class="proj-tag">PYTHON</span>
         <span class="proj-tag">NETWORK</span>
         <span class="proj-tag">RECON</span>
       </div>
       <div class="proj-footer">
-        <span class="proj-stars">⭐ 0 stars</span>
-        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+        <span class="proj-stars">⭐ 64 stars</span>
+        <a class="proj-link" https://github.com/DARK-x-121/DARK-SCANNER-.git="#" target="_blank">VIEW →</a>
       </div>
     </div>
 
     <!-- PROJECT 3 -->
     <div class="proj-card reveal rd2">
       <div class="proj-num">03</div>
-      <div class="proj-title">[ PROJECT NAME HERE ]</div>
-      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-title">[ DARK PHISH ]</div>
+      <div class="proj-desc">A Next-Gen Cloudflare-Based Phishing Tool by Team Dark.</div>
       <div class="proj-tags">
         <span class="proj-tag">PYTHON</span>
-        <span class="proj-tag">OSINT</span>
-        <span class="proj-tag">AUTOMATION</span>
+        <span class="proj-tag">ATTACK</span>
+        <span class="proj-tag">EDUCATIONAL</span>
       </div>
       <div class="proj-footer">
-        <span class="proj-stars">⭐ 0 stars</span>
-        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+        <span class="proj-stars">⭐ 55 stars</span>
+        <a class="proj-link" https://github.com/DARK-x-121/Dark-Phish.git="#" target="_blank">VIEW →</a>
       </div>
     </div>
 
     <!-- PROJECT 4 -->
     <div class="proj-card reveal rd3">
       <div class="proj-num">04</div>
-      <div class="proj-title">[ PROJECT NAME HERE ]</div>
-      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-title">[ DARK DOWN ]</div>
+      <div class="proj-desc">Guys its a high power server down ddos tool, educational purpose.</div>
       <div class="proj-tags">
-        <span class="proj-tag">BASH</span>
-        <span class="proj-tag">SECURITY</span>
-        <span class="proj-tag">ANALYSIS</span>
+        <span class="proj-tag">PYTHON</span>
+        <span class="proj-tag">DOS</span>
+        <span class="proj-tag">SERVER CRASH</span>
       </div>
       <div class="proj-footer">
-        <span class="proj-stars">⭐ 0 stars</span>
-        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+        <span class="proj-stars">⭐ 99 stars</span>
+        <a class="proj-link" https://github.com/DARK-x-121/DARK-DOWN.git="#" target="_blank">VIEW →</a>
       </div>
     </div>
 
     <!-- PROJECT 5 -->
     <div class="proj-card reveal rd4">
       <div class="proj-num">05</div>
-      <div class="proj-title">[ PROJECT NAME HERE ]</div>
-      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-title">[ DARK CAM ]</div>
+      <div class="proj-desc">using this tool you can see a hacked cctv camera footage from many countries.This tool is just for educational purposes so please don't use any wrong way.</div>
       <div class="proj-tags">
         <span class="proj-tag">PYTHON</span>
-        <span class="proj-tag">CTF</span>
-        <span class="proj-tag">TOOLS</span>
+        <span class="proj-tag">CCTV</span>
+        <span class="proj-tag">ACC3SS</span>
       </div>
       <div class="proj-footer">
-        <span class="proj-stars">⭐ 0 stars</span>
-        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+        <span class="proj-stars">⭐ 296 stars</span>
+        <a class="proj-link" https://github.com/DARK-x-121/DARK-CAM.git="#" target="_blank">VIEW →</a>
       </div>
     </div>
 
@@ -620,7 +611,7 @@ const ldr = setInterval(() => {
   loaderTxt.textContent = msgs[Math.min(Math.floor(prog/30), msgs.length-1)];
 }, 120);
 
-// ─── PARTICLES ───
+
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
 let W, H, pts = [];
@@ -645,7 +636,7 @@ function drawParticles(){
 }
 drawParticles();
 
-// ─── CURSOR ───
+
 const cur = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
 let rx=0, ry=0;
 document.addEventListener('mousemove', e=>{
@@ -678,13 +669,13 @@ const co = new IntersectionObserver(es=>es.forEach(e=>{
 }),{threshold:.5});
 document.querySelectorAll('[data-count]').forEach(c=>co.observe(c));
 
-// ─── SKILL BARS ───
+
 const sbo = new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting) e.target.querySelectorAll('.skill-bar-fill').forEach(b=>{ b.style.width=b.dataset.width+'%'; });
 }),{threshold:.3});
 document.querySelectorAll('.skill-bars').forEach(s=>sbo.observe(s));
 
-// ─── TERMINAL BLINK + TYPING ───
+
 const bc = document.getElementById('blink-cursor');
 setInterval(()=>{ bc.style.opacity=bc.style.opacity==='0'?'1':'0'; },600);
 const cmds = ['nmap -sV --open 192.168.1.0/24','python3 recon.py --target example.com','cat /etc/shadow | hash-cracker','./dark-scanner -p 1-65535 --verbose'];
