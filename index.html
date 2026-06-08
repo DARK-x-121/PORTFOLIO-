@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEAM DARK | Amit Bhakta</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070a0f; --surface:#0d1117; --card:#0f1520; --border:#1a2535;
+  --accent:#00e5ff; --accent2:#ff003c; --green:#00ff88;
+  --text:#cdd9e5; --muted:#4a6070;
+  --glow:0 0 20px rgba(0,229,255,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* LOADER */
+#loader{
+  position:fixed;inset:0;background:var(--bg);z-index:99999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  transition:opacity 0.6s 0.3s;
+}
+#loader.hide{opacity:0;pointer-events:none;}
+.loader-logo{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;letter-spacing:10px;color:var(--accent);text-shadow:var(--glow);}
+.loader-bar-wrap{width:200px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
+.loader-bar{height:100%;width:0;background:var(--accent);box-shadow:var(--glow);transition:width 0.05s;}
+.loader-txt{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--muted);}
+
+/* CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;box-shadow:0 0 10px var(--accent),0 0 25px rgba(0,229,255,.4);}
+#cursor-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(0,229,255,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s ease-out,top .12s ease-out,width .3s,height .3s;}
+
+/* SCANLINES */
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.025) 2px,rgba(0,0,0,.025) 4px);pointer-events:none;z-index:9000;}
+
+/* PARTICLES */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(7,10,15,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,229,255,.08);}
+.logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:18px;color:var(--accent);letter-spacing:6px;text-shadow:var(--glow);animation:pulse-logo 3s ease-in-out infinite;}
+@keyframes pulse-logo{0%,100%{text-shadow:0 0 10px rgba(0,229,255,.4);}50%{text-shadow:0 0 30px rgba(0,229,255,.95),0 0 60px rgba(0,229,255,.3);}}
+nav ul{list-style:none;display:flex;gap:30px;}
+nav a{text-decoration:none;color:var(--muted);font-size:11px;letter-spacing:3px;font-family:'Share Tech Mono',monospace;text-transform:uppercase;transition:color .3s,text-shadow .3s;}
+nav a:hover{color:var(--accent);text-shadow:0 0 10px var(--accent);}
+
+/* HERO */
+#home{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;z-index:1;}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.04) 1px,transparent 1px);background-size:55px 55px;animation:grid-move 25s linear infinite;}
+@keyframes grid-move{0%{transform:translateY(0);}100%{transform:translateY(55px);}}
+.orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.055) 0%,transparent 70%);animation:orb-pulse 5s ease-in-out infinite;}
+@keyframes orb-pulse{0%,100%{transform:scale(1);opacity:.5;}50%{transform:scale(1.15);opacity:1;}}
+.hero-content{position:relative;z-index:2;}
+.hero-tag{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:5px;color:var(--accent);margin-bottom:22px;opacity:0;animation:fade-up .8s .3s forwards;}
+#home h1{font-family:'Orbitron',sans-serif;font-size:clamp(46px,10vw,88px);font-weight:900;letter-spacing:10px;line-height:1;margin-bottom:18px;background:linear-gradient(135deg,#fff 30%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:fade-up .8s .5s forwards;}
+.glitch-text{position:relative;display:inline-block;}
+.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;background:linear-gradient(135deg,#fff 30%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.glitch-text::before{animation:glitch1 4s infinite;clip-path:polygon(0 0,100% 0,100% 35%,0 35%);}
+.glitch-text::after{animation:glitch2 4s infinite;clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);}
+@keyframes glitch1{0%,94%{transform:translate(0);}95%{transform:translate(-4px,1px);filter:hue-rotate(90deg);}97%{transform:translate(4px,-1px);}100%{transform:translate(0);}}
+@keyframes glitch2{0%,91%{transform:translate(0);}92%{transform:translate(4px,2px);filter:hue-rotate(-90deg);}95%{transform:translate(-4px,-2px);}100%{transform:translate(0);}}
+.hero-sub{font-size:14px;color:var(--muted);letter-spacing:3px;max-width:560px;margin:0 auto 35px;font-family:'Share Tech Mono',monospace;opacity:0;animation:fade-up .8s .7s forwards;}
+.hero-btns{display:flex;gap:15px;justify-content:center;opacity:0;animation:fade-up .8s .9s forwards;}
+.btn-primary{padding:12px 30px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;cursor:none;transition:background .3s,box-shadow .3s;border-radius:2px;}
+.btn-primary:hover{background:rgba(0,229,255,.08);box-shadow:var(--glow);}
+.btn-secondary{padding:12px 30px;background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;cursor:none;transition:border-color .3s,color .3s;border-radius:2px;text-decoration:none;display:inline-flex;align-items:center;}
+.btn-secondary:hover{border-color:rgba(0,229,255,.3);color:var(--text);}
+.stats-bar{display:flex;gap:50px;margin-top:55px;opacity:0;animation:fade-up .8s 1.1s forwards;}
+.stat{text-align:center;}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:700;color:var(--accent);text-shadow:var(--glow);display:block;}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fade-up 1s 1.6s forwards;}
+.scroll-hint span{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:4px;color:var(--muted);}
+.scroll-line{width:1px;height:45px;background:linear-gradient(to bottom,var(--accent),transparent);animation:scroll-pulse 2s ease-in-out infinite;}
+@keyframes scroll-pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+@keyframes fade-up{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+/* LIVE FEED TICKER */
+.live-feed{background:rgba(0,229,255,.04);border-top:1px solid rgba(0,229,255,.08);border-bottom:1px solid rgba(0,229,255,.08);padding:10px 0;overflow:hidden;white-space:nowrap;position:relative;z-index:1;}
+.live-feed-inner{display:inline-block;animation:ticker 30s linear infinite;}
+.live-feed-inner span{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;margin:0 40px;}
+.live-feed-inner span b{color:var(--accent);}
+.live-dot{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);margin-right:8px;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* SECTIONS */
+section{padding:90px 40px;max-width:1100px;margin:auto;position:relative;z-index:1;}
+.sec-header{display:flex;align-items:center;gap:15px;margin-bottom:45px;}
+.sec-num{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);}
+.sec-title{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:6px;color:var(--accent);}
+.sec-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
+.divider{max-width:1100px;margin:0 auto;height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);}
+
+/* BADGES */
+.badges-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:35px;}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:3px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;border:1px solid;transition:box-shadow .3s;}
+
+/* ═══ BADGE STYLES ═══ */
+/* 
+  ADD / REPLACE BADGES HERE
+  Each .badge has: icon | text | color class
+  Classes: .badge-blue .badge-green .badge-red .badge-gold .badge-purple
+  To add a new badge copy one <div class="badge badge-COLOR"> block
+*/
+.badge-blue{background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.25);color:var(--accent);}
+.badge-blue:hover{box-shadow:0 0 15px rgba(0,229,255,.2);}
+.badge-green{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.25);color:var(--green);}
+.badge-green:hover{box-shadow:0 0 15px rgba(0,255,136,.2);}
+.badge-red{background:rgba(255,0,60,.06);border-color:rgba(255,0,60,.25);color:var(--accent2);}
+.badge-red:hover{box-shadow:0 0 15px rgba(255,0,60,.2);}
+.badge-gold{background:rgba(255,200,0,.06);border-color:rgba(255,200,0,.25);color:#ffc800;}
+.badge-gold:hover{box-shadow:0 0 15px rgba(255,200,0,.2);}
+.badge-purple{background:rgba(180,0,255,.06);border-color:rgba(180,0,255,.25);color:#b400ff;}
+.badge-purple:hover{box-shadow:0 0 15px rgba(180,0,255,.2);}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.about-box{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:28px;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s;}
+.about-box:hover{border-color:rgba(0,229,255,.25);box-shadow:0 0 30px rgba(0,229,255,.04);}
+.about-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(to right,var(--accent),transparent);}
+.about-full{grid-column:1/-1;}
+.about-box p{font-size:15px;line-height:1.9;color:#7a8fa0;}
+.skill-tag{display:inline-block;background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.18);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;padding:5px 12px;border-radius:2px;margin:4px 4px 4px 0;transition:background .3s,box-shadow .3s;}
+.skill-tag:hover{background:rgba(0,229,255,.1);box-shadow:0 0 12px rgba(0,229,255,.2);}
+
+/* TERMINAL */
+.terminal{background:#04070d;border:1px solid var(--border);border-radius:4px;padding:22px 28px;font-family:'Share Tech Mono',monospace;font-size:12px;line-height:2;margin-top:22px;position:relative;}
+.terminal::before{content:'● ● ●';position:absolute;top:12px;left:18px;font-size:10px;color:var(--muted);letter-spacing:5px;}
+.terminal-body{margin-top:18px;}
+.t-line{display:flex;gap:10px;}
+.t-prompt{color:var(--accent);}
+.t-cmd{color:#cdd9e5;}
+.t-out{color:var(--muted);padding-left:22px;}
+.t-out.green{color:var(--green);}
+
+/* AUDIENCE */
+.aud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:45px;}
+.aud-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:24px 18px;text-align:center;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.aud-card:hover{transform:translateY(-5px);box-shadow:0 12px 40px rgba(0,0,0,.45);}
+.aud-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(to right,transparent,var(--accent),transparent);}
+.aud-num{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:700;color:var(--accent);text-shadow:var(--glow);display:block;margin-bottom:5px;}
+.aud-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);}
+
+/* REVIEWS */
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;}
+.review-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:24px;transition:border-color .3s,transform .3s;}
+.review-card:hover{border-color:rgba(0,229,255,.22);transform:translateY(-3px);}
+.review-card::before{content:'"';position:absolute;top:14px;left:18px;font-size:48px;line-height:1;color:rgba(0,229,255,.07);font-family:Georgia,serif;}
+.review-text{font-size:13px;line-height:1.75;color:#6a7f90;margin-bottom:18px;margin-top:8px;}
+.review-author{display:flex;align-items:center;gap:12px;}
+.review-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,rgba(0,229,255,.25),rgba(255,0,60,.15));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:11px;color:var(--accent);border:1px solid rgba(0,229,255,.2);}
+.review-name{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text);display:block;letter-spacing:1px;}
+.review-role{font-size:10px;color:var(--muted);letter-spacing:1px;}
+.stars{color:#ffd700;font-size:11px;margin-bottom:4px;}
+
+/* SKILL BARS */
+.skill-bars{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.skill-bar-item{margin-bottom:5px;}
+.skill-bar-label{display:flex;justify-content:space-between;margin-bottom:7px;}
+.skill-bar-name{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--text);}
+.skill-bar-pct{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);}
+.skill-bar-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.skill-bar-fill{height:100%;width:0;background:linear-gradient(to right,var(--accent),rgba(0,229,255,.4));border-radius:2px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:30px;}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),transparent);}
+.tl-item{position:relative;margin-bottom:30px;}
+.tl-item::before{content:'';position:absolute;left:-34px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+.tl-date{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:4px;}
+.tl-title{font-family:'Orbitron',sans-serif;font-size:13px;color:var(--text);margin-bottom:4px;}
+.tl-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* PROJECTS */
+/* ═══════════════════════════════════════════════════
+   TOP 5 PROJECTS SECTION
+   ADD YOUR PROJECT DETAILS IN THE HTML BELOW
+   Each .proj-card has:
+   - data-num: project number (01, 02 etc)
+   - .proj-title: name of the tool
+   - .proj-desc: short description
+   - .proj-tags: tech/category tags
+   - .proj-link: replace href="#" with your GitHub URL
+   ═══════════════════════════════════════════════════ */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;}
+.proj-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:26px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s;}
+.proj-card:hover{border-color:rgba(0,229,255,.3);transform:translateY(-5px);box-shadow:0 15px 45px rgba(0,0,0,.5);}
+.proj-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--accent),transparent);}
+.proj-num{font-family:'Orbitron',monospace;font-size:36px;font-weight:900;color:rgba(0,229,255,.06);position:absolute;top:15px;right:20px;line-height:1;}
+.proj-title{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:2px;color:var(--text);margin-bottom:10px;}
+.proj-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:15px;}
+.proj-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+.proj-tag{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-radius:2px;}
+.proj-footer{display:flex;align-items:center;justify-content:space-between;}
+.proj-stars{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);}
+.proj-link{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--accent);text-decoration:none;border:1px solid rgba(0,229,255,.2);padding:5px 14px;border-radius:2px;transition:background .3s,box-shadow .3s;}
+.proj-link:hover{background:rgba(0,229,255,.08);box-shadow:0 0 12px rgba(0,229,255,.2);}
+
+/* CERTS */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;}
+.cert-card{background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;position:relative;}
+.cert-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(7,10,15,.9) 100%);pointer-events:none;}
+.cert-card:hover{transform:translateY(-8px);border-color:rgba(0,229,255,.35);box-shadow:0 20px 55px rgba(0,0,0,.55);}
+.cert-card img{width:100%;display:block;filter:grayscale(25%) brightness(.85);transition:filter .3s;}
+.cert-card:hover img{filter:grayscale(0%) brightness(1);}
+.cert-info{padding:18px;position:relative;z-index:1;}
+.cert-title{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--accent);margin-bottom:4px;}
+.cert-desc{font-size:12px;color:var(--muted);}
+
+/* COMMUNITY */
+.community-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:35px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s;}
+.community-card:hover{border-color:rgba(0,255,136,.3);}
+.community-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(to right,transparent,var(--green),transparent);}
+.community-icon{font-size:40px;margin-bottom:15px;}
+.community-title{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:4px;color:var(--green);margin-bottom:10px;}
+.community-desc{font-size:14px;color:var(--muted);margin-bottom:25px;line-height:1.7;}
+.community-stats{display:flex;justify-content:center;gap:40px;margin-bottom:25px;}
+.cs-num{font-family:'Orbitron',sans-serif;font-size:22px;color:var(--green);display:block;text-shadow:0 0 15px rgba(0,255,136,.4);}
+.cs-label{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);}
+.btn-community{display:inline-block;padding:14px 35px;background:rgba(0,255,136,.07);border:1px solid rgba(0,255,136,.35);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:3px;text-decoration:none;border-radius:3px;transition:background .3s,box-shadow .3s;}
+.btn-community:hover{background:rgba(0,255,136,.12);box-shadow:0 0 20px rgba(0,255,136,.25);}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:28px;text-align:center;transition:border-color .3s,transform .3s;text-decoration:none;display:block;}
+.contact-card:hover{border-color:rgba(0,229,255,.35);transform:translateY(-4px);}
+.contact-icon{font-size:26px;margin-bottom:12px;}
+.contact-platform{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:4px;color:var(--accent);margin-bottom:7px;}
+.contact-handle{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--text);}
+
+/* FOOTER */
+footer{text-align:center;padding:28px;background:var(--surface);border-top:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);}
+footer span{color:var(--accent);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(35px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.rd1{transition-delay:.1s;} .rd2{transition-delay:.2s;} .rd3{transition-delay:.3s;} .rd4{transition-delay:.4s;}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;}
+  nav ul{gap:18px;}
+  .about-grid,.contact-grid,.skill-bars{grid-template-columns:1fr;}
+  .aud-grid{grid-template-columns:repeat(2,1fr);}
+  .stats-bar{gap:25px;}
+  section{padding:65px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">TEAM DARK</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  <div class="loader-txt" id="loader-txt">INITIALIZING...</div>
+</div>
+
+<canvas id="particles"></canvas>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">TEAM DARK</div>
+  <ul>
+    <li><a href="#home">_HOME</a></li>
+    <li><a href="#about">_ABOUT</a></li>
+    <li><a href="#projects">_PROJECTS</a></li>
+    <li><a href="#community">_COMMUNITY</a></li>
+    <li><a href="#certificates">_CERTS</a></li>
+    <li><a href="#contact">_CONTACT</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home" style="padding:0;max-width:none;">
+  <div class="grid-bg"></div>
+  <div class="orb"></div>
+  <div class="hero-content">
+    <p class="hero-tag">// CYBERSECURITY · RED TEAM · ETHICAL HACKING · EST. 2023</p>
+    <h1><span class="glitch-text" data-text="TEAM DARK">TEAM DARK</span></h1>
+    <p class="hero-sub">[ PENETRATION TESTING · EXPLOIT RESEARCH · FREE EDUCATION ]</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">VIEW PROJECTS</button>
+      <a class="btn-secondary" href="https://chat.whatsapp.com/FvYEb4vUIg89s97ud1A6fW?s=cl&p=a&mlu=1" target="_blank">JOIN COMMUNITY</a>
+    </div>
+    <div class="stats-bar">
+      <div class="stat"><span class="stat-num" data-count="2800">0</span><span class="stat-label">MEMBERS</span></div>
+      <div class="stat"><span class="stat-num" data-count="47">0</span><span class="stat-label">TUTORIALS</span></div>
+      <div class="stat"><span class="stat-num" data-count="3">0</span><span class="stat-label">CERTIFICATIONS</span></div>
+      <div class="stat"><span class="stat-num" data-count="2023">0</span><span class="stat-label">EST.</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>SCROLL</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- LIVE TICKER -->
+<div class="live-feed">
+  <div class="live-feed-inner">
+    <span><span class="live-dot"></span><b>r4x0r_dev</b> joined Team Dark · 2 min ago</span>
+    <span>New tutorial: <b>Advanced Recon Techniques</b> · 15 min ago</span>
+    <span><span class="live-dot"></span><b>sec_hunter_99</b> completed Network Scanner Lab · 1 hr ago</span>
+    <span>Community milestone: <b>2,800+ members</b> reached 🔥</span>
+    <span><span class="live-dot"></span><b>zero_k3rn3l</b> joined Team Dark · 3 hr ago</span>
+    <span>New guide dropped: <b>OSINT Masterclass Part 3</b></span>
+    <span><span class="live-dot"></span><b>ph4nt0m_x</b> starred a project · 4 hr ago</span>
+    <!-- DUPLICATE for seamless loop -->
+    <span><span class="live-dot"></span><b>r4x0r_dev</b> joined Team Dark · 2 min ago</span>
+    <span>New tutorial: <b>Advanced Recon Techniques</b> · 15 min ago</span>
+    <span><span class="live-dot"></span><b>sec_hunter_99</b> completed Network Scanner Lab · 1 hr ago</span>
+    <span>Community milestone: <b>2,800+ members</b> reached 🔥</span>
+    <span><span class="live-dot"></span><b>zero_k3rn3l</b> joined Team Dark · 3 hr ago</span>
+    <span>New guide dropped: <b>OSINT Masterclass Part 3</b></span>
+    <span><span class="live-dot"></span><b>ph4nt0m_x</b> starred a project · 4 hr ago</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-header reveal"><span class="sec-num">01</span><span class="sec-title">ABOUT</span><div class="sec-line"></div></div>
+
+  <!-- ═══ BADGES SECTION ═══
+       TO ADD MORE BADGES: copy a <div class="badge badge-COLOR"> block
+       TO CHANGE: edit text/icon
+       COLORS: badge-blue | badge-green | badge-red | badge-gold | badge-purple
+       VERIFIED = real cert, LICENSED = real license, rest = style choice
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="badges-row reveal">
+    <div class="badge badge-blue">✦ ETHICAL HACKER</div>
+    <div class="badge badge-green">✔ VERIFIED RESEARCHER</div>
+    <div class="badge badge-gold">★ TOP EDUCATOR 2024</div>
+    <div class="badge badge-red">⚡ RED TEAM SPECIALIST</div>
+    <div class="badge badge-purple">◈ SECURITY ANALYST</div>
+    <div class="badge badge-blue">🛡 INFOSEC CERTIFIED</div>
+    <!-- ADD MORE BADGES BELOW THIS LINE -->
+    <!-- <div class="badge badge-green">✔ YOUR NEW BADGE</div> -->
+  </div>
+
+  <div class="about-grid">
+    <div class="about-box about-full reveal">
+      <p>Amit Bhakta — Kolkata-based cybersecurity researcher specializing in penetration testing, red team operations, and real-time exploit research. TEAM DARK was founded on <b style="color:var(--accent)">12 February 2023</b> as a free platform dedicated to practical offensive security education — no paywalls, no gatekeeping. Our mission: empower the next generation of ethical hackers with real-world tools and techniques.</p>
+    </div>
+    <div class="about-box reveal rd1">
+      <div>
+        <span class="skill-tag">Penetration Testing</span>
+        <span class="skill-tag">Red Team Ops</span>
+        <span class="skill-tag">Exploit Research</span>
+        <span class="skill-tag">Network Recon</span>
+        <span class="skill-tag">OSINT</span>
+        <span class="skill-tag">Social Engineering</span>
+        <span class="skill-tag">Web App Security</span>
+        <span class="skill-tag">Kali Linux</span>
+        <span class="skill-tag">Metasploit</span>
+        <span class="skill-tag">Burp Suite</span>
+        <span class="skill-tag">Wireshark</span>
+        <span class="skill-tag">CTF Challenges</span>
+      </div>
+    </div>
+    <div class="about-box reveal rd2">
+      <div class="skill-bars">
+        <div class="skill-bar-item"><div class="skill-bar-label"><span class="skill-bar-name">PENETRATION TESTING</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-label"><span class="skill-bar-name">NETWORK RECON</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-label"><span class="skill-bar-name">EXPLOIT RESEARCH</span><span class="skill-bar-pct">80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="80"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-label"><span class="skill-bar-name">OSINT</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-label"><span class="skill-bar-name">WEB APP SECURITY</span><span class="skill-bar-pct">78%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="78"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-label"><span class="skill-bar-name">RED TEAM OPS</span><span class="skill-bar-pct">83%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-width="83"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="about-box reveal" style="margin-top:22px;">
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-date">FEB 2023</div><div class="tl-title">TEAM DARK FOUNDED</div><div class="tl-desc">Launched as a free cybersecurity learning platform. First tools and guides released to the community.</div></div>
+      <div class="tl-item"><div class="tl-date">JUN 2023</div><div class="tl-title">FIRST 500 MEMBERS</div><div class="tl-desc">Community grew rapidly. Network scanner and recon tools released on GitHub with 100+ stars.</div></div>
+      <div class="tl-item"><div class="tl-date">DEC 2023</div><div class="tl-title">INFOSEC CERTIFICATION</div><div class="tl-desc">Completed Practical Security Foundations certification. Expanded content into web app security.</div></div>
+      <div class="tl-item"><div class="tl-date">2024</div><div class="tl-title">20+ TOOLS · 2000+ MEMBERS</div><div class="tl-desc">Major expansion — OSINT guides, exploit research series, and community WhatsApp launched.</div></div>
+      <div class="tl-item"><div class="tl-date">2025–NOW</div><div class="tl-title">2800+ ACTIVE MEMBERS</div><div class="tl-desc">Team Dark established as a go-to free resource for cybersecurity learners across India.</div></div>
+    </div>
+  </div>
+
+  <div class="terminal reveal" style="margin-top:22px;">
+    <div class="terminal-body">
+      <div class="t-line"><span class="t-prompt">root@teamdark:~$</span><span class="t-cmd">whoami</span></div>
+      <div class="t-out green">Amit Bhakta — Cybersecurity Researcher & Educator | Kolkata</div>
+      <div class="t-line"><span class="t-prompt">root@teamdark:~$</span><span class="t-cmd">cat mission.txt</span></div>
+      <div class="t-out">Free knowledge. Real skills. No gatekeeping. Est. 12 Feb 2023.</div>
+      <div class="t-line"><span class="t-prompt">root@teamdark:~$</span><span class="t-cmd" id="blink-cursor">_</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-header reveal"><span class="sec-num">02</span><span class="sec-title">TOP PROJECTS</span><div class="sec-line"></div></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TOP 5 WHITE HAT TOOLS — ADD YOUR PROJECTS HERE
+       
+       HOW TO FILL EACH CARD:
+       1. .proj-title       → Your tool/project name
+       2. .proj-desc        → Short description (2-3 lines)
+       3. .proj-tag spans   → Tech tags (Python, Bash, etc.)
+       4. .proj-stars span  → Star count from GitHub
+       5. href on .proj-link → Your GitHub repo URL
+       
+       COPY ONE .proj-card BLOCK TO ADD MORE PROJECTS
+  ═══════════════════════════════════════════════════════════════ -->
+  <div class="projects-grid">
+
+    <!-- PROJECT 1 — REPLACE WITH YOUR TOOL -->
+    <div class="proj-card reveal">
+      <div class="proj-num">01</div>
+      <div class="proj-title">[ PROJECT NAME HERE ]</div>
+      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">PYTHON</span>
+        <span class="proj-tag">RED TEAM</span>
+        <span class="proj-tag">EDUCATIONAL</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-stars">⭐ 0 stars</span>
+        <!-- REPLACE href WITH YOUR GITHUB LINK -->
+        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 2 -->
+    <div class="proj-card reveal rd1">
+      <div class="proj-num">02</div>
+      <div class="proj-title">[ PROJECT NAME HERE ]</div>
+      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">BASH</span>
+        <span class="proj-tag">NETWORK</span>
+        <span class="proj-tag">RECON</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-stars">⭐ 0 stars</span>
+        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 3 -->
+    <div class="proj-card reveal rd2">
+      <div class="proj-num">03</div>
+      <div class="proj-title">[ PROJECT NAME HERE ]</div>
+      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">PYTHON</span>
+        <span class="proj-tag">OSINT</span>
+        <span class="proj-tag">AUTOMATION</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-stars">⭐ 0 stars</span>
+        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 4 -->
+    <div class="proj-card reveal rd3">
+      <div class="proj-num">04</div>
+      <div class="proj-title">[ PROJECT NAME HERE ]</div>
+      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">BASH</span>
+        <span class="proj-tag">SECURITY</span>
+        <span class="proj-tag">ANALYSIS</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-stars">⭐ 0 stars</span>
+        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+      </div>
+    </div>
+
+    <!-- PROJECT 5 -->
+    <div class="proj-card reveal rd4">
+      <div class="proj-num">05</div>
+      <div class="proj-title">[ PROJECT NAME HERE ]</div>
+      <div class="proj-desc">Short description of what this tool does. What problem it solves, what it targets, educational purpose.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">PYTHON</span>
+        <span class="proj-tag">CTF</span>
+        <span class="proj-tag">TOOLS</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-stars">⭐ 0 stars</span>
+        <a class="proj-link" href="#" target="_blank">VIEW →</a>
+      </div>
+    </div>
+
+  </div>
+  <!-- ═══ END PROJECTS — ADD MORE .proj-card BLOCKS ABOVE THIS LINE ═══ -->
+</section>
+
+<div class="divider"></div>
+
+<!-- COMMUNITY STATS + REVIEWS -->
+<section id="audience">
+  <div class="sec-header reveal"><span class="sec-num">03</span><span class="sec-title">COMMUNITY STATS</span><div class="sec-line"></div></div>
+  <div class="aud-grid">
+    <div class="aud-card reveal"><span class="aud-num" data-count="2847">0</span><span class="aud-label"><span class="live-dot"></span>ACTIVE MEMBERS</span></div>
+    <div class="aud-card reveal rd1"><span class="aud-num" data-count="12400">0</span><span class="aud-label">TOTAL REACH</span></div>
+    <div class="aud-card reveal rd2"><span class="aud-num" data-count="94">0</span><span class="aud-label">% SATISFACTION</span></div>
+    <div class="aud-card reveal rd3"><span class="aud-num" data-count="47">0</span><span class="aud-label">RESOURCES SHARED</span></div>
+  </div>
+
+  <div class="sec-header reveal" style="margin-top:55px;"><span class="sec-num">04</span><span class="sec-title">COMMUNITY REVIEWS</span><div class="sec-line"></div></div>
+  <div class="reviews-grid">
+    <div class="review-card reveal" style="position:relative;">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Team Dark changed how I approach cybersecurity. Practical content is next level — no fluff, just real skills. Amit knows his stuff deeply.</p>
+      <div class="review-author"><div class="review-avatar">RX</div><div><span class="review-name">r4x0r_dev</span><span class="review-role">CTF PLAYER · DELHI</span></div></div>
+    </div>
+    <div class="review-card reveal rd1" style="position:relative;">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Been following since 2023. The red team content is consistently excellent. Finally a platform that treats learners like professionals.</p>
+      <div class="review-author"><div class="review-avatar">SH</div><div><span class="review-name">sec_hunter_99</span><span class="review-role">SECURITY ANALYST · MUMBAI</span></div></div>
+    </div>
+    <div class="review-card reveal rd2" style="position:relative;">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Free content here beats most paid courses. Real-time exploit research explained clearly. Team Dark is building something special.</p>
+      <div class="review-author"><div class="review-avatar">ZK</div><div><span class="review-name">zero_k3rn3l</span><span class="review-role">PENTESTER · BANGALORE</span></div></div>
+    </div>
+    <div class="review-card reveal rd3" style="position:relative;">
+      <div class="stars">★★★★☆</div>
+      <p class="review-text">Amit's approach is unique — he gives you the mindset, not just the commands. Community is super helpful and active. Solid platform.</p>
+      <div class="review-author"><div class="review-avatar">NK</div><div><span class="review-name">n1ghtk0de</span><span class="review-role">STUDENT HACKER · HYDERABAD</span></div></div>
+    </div>
+    <div class="review-card reveal" style="position:relative;">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">No other platform shares this level of practical red team knowledge for free. OSINT modules alone are worth more than most paid resources.</p>
+      <div class="review-author"><div class="review-avatar">PX</div><div><span class="review-name">ph4nt0m_x</span><span class="review-role">BUG BOUNTY HUNTER · PUNE</span></div></div>
+    </div>
+    <div class="review-card reveal rd1" style="position:relative;">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Went from zero to landing my first bug bounty in 3 months following Team Dark. The exploit research breakdowns are incredible. Legend.</p>
+      <div class="review-author"><div class="review-avatar">AV</div><div><span class="review-name">anon_v3ctor</span><span class="review-role">BUG BOUNTY · CHENNAI</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMMUNITY / WHATSAPP -->
+<section id="community">
+  <div class="sec-header reveal"><span class="sec-num">05</span><span class="sec-title">FREE COMMUNITY</span><div class="sec-line"></div></div>
+  <div class="community-card reveal">
+    <div class="community-icon">💬</div>
+    <div class="community-title">JOIN TEAM DARK COMMUNITY</div>
+    <p class="community-desc">Get free cybersecurity guides, tools, tutorials, and connect with 2800+ ethical hackers — all in one WhatsApp community. No paywalls. No gatekeeping. Just real knowledge.</p>
+    <div class="community-stats">
+      <div><span class="cs-num" data-count="2847">0</span><span class="cs-label">MEMBERS</span></div>
+      <div><span class="cs-num" data-count="100">0</span><span class="cs-label">% FREE</span></div>
+      <div><span class="cs-num" data-count="47">0</span><span class="cs-label">GUIDES</span></div>
+    </div>
+    <a class="btn-community" href="https://chat.whatsapp.com/FvYEb4vUIg89s97ud1A6fW?s=cl&p=a&mlu=1" target="_blank">JOIN FREE NOW →</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div class="sec-header reveal"><span class="sec-num">06</span><span class="sec-title">CERTIFICATIONS</span><div class="sec-line"></div></div>
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <img src="Certificate_1742140639073.png" alt="Certificate 1">
+      <div class="cert-info"><div class="cert-title">INFOSEC CERTIFICATION</div><div class="cert-desc">Practical Security Foundations</div></div>
+    </div>
+    <div class="cert-card reveal rd1">
+      <img src="IMG_20250319_215134.jpg" alt="Certificate 2">
+      <div class="cert-info"><div class="cert-title">CYBERSECURITY FUNDAMENTALS</div><div class="cert-desc">Threat Awareness & Defense</div></div>
+    </div>
+    <div class="cert-card reveal rd2">
+      <img src="Vmake1723867501017.png" alt="Certificate 3">
+      <div class="cert-info"><div class="cert-title">SECURITY RESEARCH</div><div class="cert-desc">Technical Analysis & Exploit Study</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-header reveal"><span class="sec-num">07</span><span class="sec-title">CONTACT</span><div class="sec-line"></div></div>
+  <div class="contact-grid">
+    <a class="contact-card reveal" href="https://wa.me/919836942455" target="_blank">
+      <div class="contact-icon">📱</div>
+      <div class="contact-platform">WHATSAPP</div>
+      <div class="contact-handle">+91 98369 42455</div>
+    </a>
+    <a class="contact-card reveal rd1" href="https://instagram.com/a.m.it_" target="_blank">
+      <div class="contact-icon">📸</div>
+      <div class="contact-platform">INSTAGRAM</div>
+      <div class="contact-handle">@a.m.it_</div>
+    </a>
+  </div>
+</section>
+
+<footer>© 2026 <span>TEAM DARK</span> | DEVELOPED BY <span>AMIT BHAKTA</span> | KOLKATA, INDIA</footer>
+
+<script>
+// ─── LOADER ───
+const loaderBar = document.getElementById('loader-bar');
+const loaderTxt = document.getElementById('loader-txt');
+const loader = document.getElementById('loader');
+const msgs = ['LOADING ASSETS...','INITIALIZING MODULES...','DECRYPTING CONTENT...','SYSTEM READY'];
+let prog = 0;
+const ldr = setInterval(() => {
+  prog += Math.random() * 18 + 5;
+  if(prog >= 100){ prog = 100; clearInterval(ldr); loaderTxt.textContent = 'SYSTEM READY'; setTimeout(() => loader.classList.add('hide'), 400); }
+  loaderBar.style.width = prog + '%';
+  loaderTxt.textContent = msgs[Math.min(Math.floor(prog/30), msgs.length-1)];
+}, 120);
+
+// ─── PARTICLES ───
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+for(let i=0;i<80;i++) pts.push({x:Math.random()*9999,y:Math.random()*9999,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5,o:Math.random()*.4+.1});
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+    ctx.beginPath(); ctx.arc(p.x%W,p.y%H,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,229,255,${p.o})`; ctx.fill();
+  });
+  pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+    const dx=a.x%W-b.x%W, dy=a.y%H-b.y%H, d=Math.sqrt(dx*dx+dy*dy);
+    if(d<120){ ctx.beginPath(); ctx.moveTo(a.x%W,a.y%H); ctx.lineTo(b.x%W,b.y%H);
+      ctx.strokeStyle=`rgba(0,229,255,${.08*(1-d/120)})`; ctx.lineWidth=.5; ctx.stroke(); }
+  }));
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ─── CURSOR ───
+const cur = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+let rx=0, ry=0;
+document.addEventListener('mousemove', e=>{
+  cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px';
+  rx=e.clientX; ry=e.clientY;
+});
+(function animRing(){
+  const cr = ring.getBoundingClientRect();
+  const cx = cr.left+cr.width/2, cy = cr.top+cr.height/2;
+  ring.style.left = (parseFloat(ring.style.left||0)+( rx-cx)*.15)+'px';
+  ring.style.top  = (parseFloat(ring.style.top||0) +(ry-cy)*.15)+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button,.cert-card,.review-card,.aud-card,.proj-card,.contact-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ cur.style.width='18px';cur.style.height='18px';ring.style.width='52px';ring.style.height='52px'; });
+  el.addEventListener('mouseleave',()=>{ cur.style.width='10px';cur.style.height='10px';ring.style.width='34px';ring.style.height='34px'; });
+});
+
+// ─── SCROLL REVEAL ───
+const ro = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(r=>ro.observe(r));
+
+// ─── COUNTERS ───
+function animCount(el, target, dur=1800){
+  let s=0, step=target/(dur/16);
+  const t=setInterval(()=>{ s+=step; if(s>=target){ el.textContent=target.toLocaleString(); clearInterval(t); return; } el.textContent=Math.floor(s).toLocaleString(); },16);
+}
+const co = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting && !e.target.dataset.animated){ e.target.dataset.animated=1; animCount(e.target,parseInt(e.target.dataset.count)); }
+}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(c=>co.observe(c));
+
+// ─── SKILL BARS ───
+const sbo = new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting) e.target.querySelectorAll('.skill-bar-fill').forEach(b=>{ b.style.width=b.dataset.width+'%'; });
+}),{threshold:.3});
+document.querySelectorAll('.skill-bars').forEach(s=>sbo.observe(s));
+
+// ─── TERMINAL BLINK + TYPING ───
+const bc = document.getElementById('blink-cursor');
+setInterval(()=>{ bc.style.opacity=bc.style.opacity==='0'?'1':'0'; },600);
+const cmds = ['nmap -sV --open 192.168.1.0/24','python3 recon.py --target example.com','cat /etc/shadow | hash-cracker','./dark-scanner -p 1-65535 --verbose'];
+let li=0, ci=0;
+function type(){ if(ci<cmds[li].length){ bc.textContent=cmds[li].slice(0,ci+1)+'_'; ci++; setTimeout(type,75); } else { setTimeout(()=>{ ci=0; li=(li+1)%cmds.length; type(); },2200); } }
+setTimeout(type,2500);
+</script>
+</body>
+</html>
